@@ -30,8 +30,8 @@ jobs:
       - run:
           name: docker setting
           command: |
-            sudo apt-get install -y docker
-            sudo systemctl start docker
+            curl -fsSL get.docker.com -o get-docker.sh
+            sudo sh get-docker.sh
       - run:
           name: build image
           command: |

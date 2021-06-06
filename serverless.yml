@@ -6,7 +6,7 @@ provider:
   region: ap-northeast-1
 
 functions:
-  hello:
-    image: 263839930238.dkr.ecr.ap-northeast-1.amazonaws.com/tensorflow-lambda-test@${env:ECR_DIGEST}
+  tensorflow-lambda-test:
+    image: ${env:AWS_ACCOUNTID}.dkr.ecr.${env:AWS_REGION}.amazonaws.com/${env:FUNC_NAME}@${env:ECR_DIGEST}
     memorySize: 2048
     timeout: 180

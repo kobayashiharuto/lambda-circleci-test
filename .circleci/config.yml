@@ -18,9 +18,13 @@ jobs:
           aws-secret-access-key: ${AWS_SECRET_ACCESS_KEY_STG}
           override-installed: true
       - run:
-          name: aws auth
+          name: env debug
+          command: env
+      - run:
+          name: git clone
           command: |
-          git clone 
+          git clone https://github.com/kobayashiharuto/lambda-circleci-test.git \
+          && cd lambda-circleci-test
       - run:
           name: aws auth
           command: |
@@ -30,9 +34,9 @@ jobs:
           name: build image
           command: |
             docker build -t tensorflow-lambda-test . \
-            && docker tag tensorflow-lambda-test ${ACCOUNTID}.dkr.ecr.${REGION}.amazonaws.com/${FUNC_NAME} \
-            && ECR_DIGEST=`docker push ${ACCOUNTID}.dkr.ecr.${REGION}.amazonaws.com/${FUNC_NAME} | grep digest | cut -d ' ' -f3` \
-            $$ echo &{ECR_DIGEST}
+            && docker tag tensorflow-lambda-test ${ACCOUNTID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${FUNC_NAME} \
+            && ECR_DIGEST=`docker push ${AWS_ACCOUNTID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${FUNC_NAME} | grep digest | cut -d ' ' -f3` \
+            && echo &{ECR_DIGEST}
       - run:
           name: serverless deploy
           command: |

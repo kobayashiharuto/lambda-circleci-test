@@ -35,6 +35,14 @@ jobs:
       - run:
           name: build image
           command: |
+            sudo install -y daemonize dbus policykit-1
+            wget https://packages.microsoft.com/config/debian/10/packages-microsoft-prod.deb -O packages-microsoft-prod.deb dpkg -i packages-microsoft-prod.deb
+            sudo apt update; sudo apt upgrade
+            sudo apt-get install -y dotnet-runtime-3.1
+            curl -s https://packagecloud.io/install/repositories/arkane-systems/wsl-translinux/script.deb.sh | sudo bash
+            sudo apt install -y systemd-genie
+            genie -s
+            sudo systemd stop getty@tty
             sudo systemctl start docker
             sudo systemctl status docker
             sudo docker build -t tensorflow-lambda-test .

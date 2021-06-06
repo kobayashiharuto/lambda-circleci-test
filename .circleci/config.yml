@@ -23,26 +23,26 @@ jobs:
       - run:
           name: git clone
           command: |
-          git clone https://github.com/kobayashiharuto/lambda-circleci-test.git \
-          && cd lambda-circleci-test
+            git clone https://github.com/kobayashiharuto/lambda-circleci-test.git
+            cd lambda-circleci-test
       - run:
           name: aws auth
           command: |
-            aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws \
-            && aws ecr get-login-password | docker login --username AWS --password-stdin ${AWS_ACCOUNTID}.dkr.ecr.${AWS_REGION}.amazonaws.com
+            aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws
+            aws ecr get-login-password | docker login --username AWS --password-stdin ${AWS_ACCOUNTID}.dkr.ecr.${AWS_REGION}.amazonaws.com
       - run:
           name: build image
           command: |
-            docker build -t tensorflow-lambda-test . \
-            && docker tag tensorflow-lambda-test ${ACCOUNTID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${FUNC_NAME} \
-            && ECR_DIGEST=`docker push ${AWS_ACCOUNTID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${FUNC_NAME} | grep digest | cut -d ' ' -f3` \
-            && echo &{ECR_DIGEST}
+            docker build -t tensorflow-lambda-test .
+            docker tag tensorflow-lambda-test ${ACCOUNTID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${FUNC_NAME}
+            ECR_DIGEST=`docker push ${AWS_ACCOUNTID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${FUNC_NAME} | grep digest | cut -d ' ' -f3`
+            echo &{ECR_DIGEST}
       - run:
           name: serverless deploy
           command: |
-            sudo npm install -g serverless \
-            && serverless config credentials --provider aws --key ${AWS_ACCESS_KEY_ID_STG} --secret ${AWS_SECRET_ACCESS_KEY_STG} \
-            && serverless deploy
+            sudo npm install -g serverless
+            serverless config credentials --provider aws --key ${AWS_ACCESS_KEY_ID_STG} --secret ${AWS_SECRET_ACCESS_KEY_STG}
+            serverless deploy
 
 workflows:
   version: 2

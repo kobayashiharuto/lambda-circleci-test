@@ -36,7 +36,7 @@ jobs:
           name: build image
           command: |
             sudo apt install daemonize
-            curl -s https://packagecloud.io/install/repositories/arkane-systems/wsl-translinux/script.deb.sh
+            curl -s https://packagecloud.io/install/repositories/arkane-systems/wsl-translinux/script.deb.sh | sh
             sudo apt install -y systemd-genie
             genie -s
             sudo systemd stop getty@tty

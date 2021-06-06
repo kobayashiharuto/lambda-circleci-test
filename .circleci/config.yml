@@ -12,11 +12,6 @@ jobs:
     executor: aws-cli/default
     steps:
       - checkout
-      - aws-cli/setup:
-          aws-region: ${AWS_REGION}
-          aws-access-key-id: ${AWS_ACCESS_KEY_ID_STG}
-          aws-secret-access-key: ${AWS_SECRET_ACCESS_KEY_STG}
-          override-installed: true
       - run:
           name: env debug
           command: env
@@ -29,13 +24,13 @@ jobs:
           name: aws auth
           command: |
             aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws
-            aws ecr get-login-password | docker login --username AWS --password-stdin ${AWS_ACCOUNTID}.dkr.ecr.${AWS_REGION}.amazonaws.com
+            aws ecr get-login-password | docker login --username AWS --password-stdin ${AWS_ACCOUNTID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com
       - run:
           name: build image
           command: |
             docker build -t tensorflow-lambda-test .
-            docker tag tensorflow-lambda-test ${ACCOUNTID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${FUNC_NAME}
-            ECR_DIGEST=`docker push ${AWS_ACCOUNTID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${FUNC_NAME} | grep digest | cut -d ' ' -f3`
+            docker tag tensorflow-lambda-test ${ACCOUNTID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${FUNC_NAME}
+            ECR_DIGEST=`docker push ${AWS_ACCOUNTID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${FUNC_NAME} | grep digest | cut -d ' ' -f3`
             echo &{ECR_DIGEST}
       - run:
           name: serverless deploy

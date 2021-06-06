@@ -7,6 +7,6 @@ provider:
 
 functions:
   tensorflow-lambda-test:
-    image: ${env:AWS_ACCOUNTID}.dkr.ecr.${env:AWS_REGION}.amazonaws.com/${env:FUNC_NAME}@${env:ECR_DIGEST}
+    image: ${env:AWS_ACCOUNTID}.dkr.ecr.${env:AWS_DEFAULT_REGION}.amazonaws.com/${env:FUNC_NAME}@${env:ECR_DIGEST}
     memorySize: 2048
     timeout: 180

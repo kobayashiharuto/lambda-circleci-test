@@ -46,9 +46,9 @@ jobs:
 
 workflows:
   version: 2
-  deploy_lambda_test:
+  build_and_deploy:
     jobs:
-      - deploy:
+      - deploy_lambda_test:
           filters:
             branches:
               only: main

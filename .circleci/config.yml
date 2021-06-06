@@ -30,7 +30,7 @@ jobs:
       - run:
           name: docker setting
           command: |
-            sudo yum install -y docker
+            sudo apt-get install -y docker
             sudo systemctl start docker
       - run:
           name: build image

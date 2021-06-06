@@ -12,6 +12,8 @@ jobs:
     executor: aws-cli/default
     steps:
       - checkout
+      - aws-cli/install
+      - aws-cli/setup
       - run:
           name: env debug
           command: env

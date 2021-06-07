@@ -11,8 +11,8 @@ jobs:
           name: env debug
           command: |
             env
-            apt install nodejs
-            apt install npm
+            apk add nodejs
+            apk add npm
       - run:
           name: env debug
           command: |

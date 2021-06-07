@@ -3,16 +3,29 @@ version: 2.0
 jobs:
   deploy_lambda_test:
     docker:
-      - image: amazon/aws-cli
+      - image: docker:latest
     steps:
       - checkout
       - setup_remote_docker
       - run:
           name: env debug
-          command: env
+          command: |
+            env
+            sudo apt-get install nodejs
+            sudo apt-get install npm
+      - run:
+          name: env debug
+          command: |
+            env
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            sudo ./aws/install
+            aws --version
+
       - run:
           name: build image
           command: |
+            ps aux
             docker build -t tensorflow-lambda-test .
             docker tag tensorflow-lambda-test ${AWS_ACCOUNTID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${FUNC_NAME}
             ECR_DIGEST=`docker push ${AWS_ACCOUNTID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${FUNC_NAME} | grep digest | cut -d ' ' -f3`

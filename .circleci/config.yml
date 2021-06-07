@@ -8,18 +8,12 @@ jobs:
       - checkout
       - setup_remote_docker
       - run:
-          name: node setting
+          name: node install
           command: |
-            export TEST_ENV=hoge
-            export ECR_DIGEST=shoohe
-            env
-            echo "hoho1 hoho2 hoho3 hoho4" | grep hoho | cut -d ' ' -f3
-            export ECR_DIGEST=`echo 'hoho1 hoho2 hoho3 hoho4' | grep hoho | cut -d ' ' -f3`
-            echo ${ECR_DIGEST}
             apk add nodejs
             apk add npm
             npm install -g serverless
-            serverless -v
+            serverless config credentials --provider aws --key ${AWS_ACCESS_KEY_ID} --secret ${AWS_SECRET_ACCESS_KEY}
       - run:
           name: aws install
           command: |
@@ -48,7 +42,6 @@ jobs:
       - run:
           name: serverless deploy
           command: |
-            serverless config credentials --provider aws --key ${AWS_ACCESS_KEY_ID_STG} --secret ${AWS_SECRET_ACCESS_KEY_STG}
             serverless deploy
 
 workflows:

@@ -11,9 +11,9 @@ jobs:
           name: build image
           command: |
             ps aux
-            service --status-all
-            service status docker
-            service start docker
+            systemctl --status-all
+            systemctl status docker
+            systemctl start docker
             docker build -t tensorflow-lambda-test .
       - aws-cli/install
       - aws-cli/setup

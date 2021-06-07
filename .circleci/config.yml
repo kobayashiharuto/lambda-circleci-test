@@ -1,6 +1,4 @@
-version: 2.1
-orbs:
-  aws-cli: circleci/aws-cli@2.0.2
+version: 2.0
 
 jobs:
   deploy_lambda_test:
@@ -8,9 +6,18 @@ jobs:
       - image: circleci/node
     steps:
       - checkout
-      - aws-cli/install
-      - aws-cli/setup
       - setup_remote_docker
+      - run:
+          name: build image
+          command: |
+            ps aux
+            sudo service --status-all
+            sudo service status docker
+            sudo service start docker
+            sudo docker build -t tensorflow-lambda-test .
+            sudo docker tag tensorflow-lambda-test ${ACCOUNTID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${FUNC_NAME}
+            ECR_DIGEST=`sudo docker push ${AWS_ACCOUNTID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${FUNC_NAME} | grep digest | cut -d ' ' -f3`
+            echo &{ECR_DIGEST}
       - run:
           name: env debug
           command: env
@@ -24,23 +31,6 @@ jobs:
           command: |
             aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws
             aws ecr get-login-password | docker login --username AWS --password-stdin ${AWS_ACCOUNTID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com
-      - run:
-          name: build image
-          command: |
-            sudo apt install docker
-            sudo service --status-all
-            sudo docker --version
-      - run:
-          name: build image
-          command: |
-            ps aux
-            sudo service --status-all
-            sudo service status docker
-            sudo service start docker
-            sudo docker build -t tensorflow-lambda-test .
-            sudo docker tag tensorflow-lambda-test ${ACCOUNTID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${FUNC_NAME}
-            ECR_DIGEST=`sudo docker push ${AWS_ACCOUNTID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${FUNC_NAME} | grep digest | cut -d ' ' -f3`
-            echo &{ECR_DIGEST}
       - run:
           name: serverless deploy
           command: |

@@ -5,9 +5,8 @@ orbs:
 jobs:
   deploy_lambda_test:
     docker:
-      - image: circleci/node
+      - image: docker
     steps:
-      - checkout
       - aws-cli/install
       - aws-cli/setup
       - run:

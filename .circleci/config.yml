@@ -6,7 +6,6 @@ jobs:
   deploy_lambda_test:
     docker:
       - image: circleci/node
-        command: /sbin/init
     steps:
       - checkout
       - aws-cli/install

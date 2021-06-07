@@ -3,7 +3,7 @@ version: 2.0
 jobs:
   deploy_lambda_test:
     docker:
-      - image: circleci/node
+      - image: docker:latest
     steps:
       - checkout
       - setup_remote_docker
@@ -11,9 +11,6 @@ jobs:
           name: build image
           command: |
             ps aux
-            sudo service --status-all
-            sudo service status docker
-            sudo service start docker
             sudo docker build -t tensorflow-lambda-test .
             sudo docker tag tensorflow-lambda-test ${ACCOUNTID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${FUNC_NAME}
             ECR_DIGEST=`sudo docker push ${AWS_ACCOUNTID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${FUNC_NAME} | grep digest | cut -d ' ' -f3`

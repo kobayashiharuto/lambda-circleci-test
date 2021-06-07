@@ -5,8 +5,8 @@ orbs:
 jobs:
   deploy_lambda_test:
     docker:
-      - image: 'cimg/python:<<parameters.python-version>>'
-      command: /sbin/init
+      - image: circleci/node
+        command: /sbin/init
     steps:
       - checkout
       - aws-cli/install

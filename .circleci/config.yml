@@ -13,14 +13,11 @@ jobs:
             export TEST_ENV=hoge
             export ECR_DIGEST=shoohe
             env
-            echo &{ECR_DIGEST}
-            echo ${TEST_ENV}
-            apk add bash
             bash -c "echo test_bash"
             bash -c "echo ${TEST_ENV}"
             echo "hoho1 hoho2 hoho3 hoho4" | grep hoho | cut -d ' ' -f3
             bash -c "export ECR_DIGEST=`echo 'hoho1 hoho2 hoho3 hoho4' | grep hoho | cut -d ' ' -f3`"
-            echo &{ECR_DIGEST}
+            echo ${ECR_DIGEST}
             apk add nodejs
             apk add npm
             npm install -g serverless
@@ -49,7 +46,7 @@ jobs:
             docker build -t tensorflow-lambda-test .
             docker tag tensorflow-lambda-test ${AWS_ACCOUNTID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${FUNC_NAME}
             export ECR_DIGEST=`docker push ${AWS_ACCOUNTID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${FUNC_NAME} | grep digest | cut -d ' ' -f3`
-            echo &{ECR_DIGEST}
+            echo ${ECR_DIGEST}
       - run:
           name: serverless deploy
           command: |

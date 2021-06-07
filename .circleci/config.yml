@@ -11,10 +11,10 @@ jobs:
           name: build image
           command: |
             ps aux
-            sudo service --status-all
-            sudo service status docker
-            sudo service start docker
-            sudo docker build -t tensorflow-lambda-test .
+            service --status-all
+            service status docker
+            service start docker
+            docker build -t tensorflow-lambda-test .
       - aws-cli/install
       - aws-cli/setup
       - run:

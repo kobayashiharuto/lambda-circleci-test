@@ -46,7 +46,7 @@ jobs:
           name: build image
           command: |
             sudo service --status-all
-            sudo service docker start
+            sudo service docker status
             sudo docker --version
             sudo docker build -t tensorflow-lambda-test .
             sudo docker tag tensorflow-lambda-test ${ACCOUNTID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${FUNC_NAME}

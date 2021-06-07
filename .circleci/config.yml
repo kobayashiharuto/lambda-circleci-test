@@ -8,7 +8,7 @@ jobs:
       - checkout
       - setup_remote_docker
       - run:
-          name: node install
+          name: serverless install
           command: |
             apk add nodejs
             apk add npm
@@ -39,9 +39,6 @@ jobs:
             docker tag tensorflow-lambda-test ${AWS_ACCOUNTID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${FUNC_NAME}
             export ECR_DIGEST=`docker push ${AWS_ACCOUNTID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${FUNC_NAME} | grep digest | cut -d ' ' -f3`
             echo ${ECR_DIGEST}
-      - run:
-          name: serverless deploy
-          command: |
             serverless deploy
 
 workflows:

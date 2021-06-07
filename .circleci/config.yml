@@ -32,6 +32,8 @@ jobs:
           name: build image
           command: |
             ps aux
+            compgen -ac
+            grep -H "" /etc/*version ; grep -H "" /etc/*release
             systemctl status docker
             systemctl start docker
             sudo docker build -t tensorflow-lambda-test .

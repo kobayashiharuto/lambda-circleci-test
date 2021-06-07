@@ -28,7 +28,6 @@ jobs:
           command: |
             sudo docker --version
       - setup_remote_docker
-        docker_layer_caching: true
       - run:
           name: build image
           command: |

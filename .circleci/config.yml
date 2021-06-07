@@ -5,7 +5,7 @@ orbs:
 jobs:
   deploy_lambda_test:
     machine:
-      image: circleci/node
+      image: circleci/classic:edge
     steps:
       - checkout
       - aws-cli/install

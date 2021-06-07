@@ -5,17 +5,9 @@ orbs:
 jobs:
   deploy_lambda_test:
     docker:
-      - image: docker
+      - image: circleci/node
     steps:
-      - run:
-          name: build image
-          command: |
-            ps aux
-            compgen -ac
-            systemctl --status-all
-            systemctl status docker
-            systemctl start docker
-            docker build -t tensorflow-lambda-test .
+      - checkout
       - aws-cli/install
       - aws-cli/setup
       - run:
@@ -44,7 +36,6 @@ jobs:
               stable"
             sudo apt-get update
             sudo apt-get install -y docker-ce
-            sudo docker --version
             sudo docker --version
       - setup_remote_docker
       - run:

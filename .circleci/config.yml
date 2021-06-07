@@ -5,6 +5,7 @@ jobs:
     docker:
       - image: docker:latest
     steps:
+      - checkout
       - setup_remote_docker
       - run:
           name: node setting
@@ -26,7 +27,6 @@ jobs:
             unzip -q awscliv2.zip
             aws/install
             aws --version
-      - checkout
       - run:
           name: aws auth
           command: |

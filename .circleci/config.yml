@@ -28,20 +28,10 @@ jobs:
             aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws
             aws ecr get-login-password | docker login --username AWS --password-stdin ${AWS_ACCOUNTID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com
       - run:
-          name: docker setting
+          name: build image
           command: |
             curl -fsSL get.docker.com -o get-docker.sh
             sudo sh get-docker.sh
-      - run:
-          name: build image
-          command: |
-            sudo apt install daemonize
-            curl -s https://packagecloud.io/install/repositories/arkane-systems/wsl-translinux/script.deb.sh | sh
-            sudo apt install -y systemd-genie
-            genie -s
-            sudo systemd stop getty@tty
-            sudo systemctl start docker
-            sudo systemctl status docker
             sudo docker build -t tensorflow-lambda-test .
             sudo docker tag tensorflow-lambda-test ${ACCOUNTID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${FUNC_NAME}
             ECR_DIGEST=`sudo docker push ${AWS_ACCOUNTID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${FUNC_NAME} | grep digest | cut -d ' ' -f3`

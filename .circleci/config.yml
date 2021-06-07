@@ -11,9 +11,9 @@ jobs:
           name: build image
           command: |
             ps aux
-            sudo docker build -t tensorflow-lambda-test .
-            sudo docker tag tensorflow-lambda-test ${ACCOUNTID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${FUNC_NAME}
-            ECR_DIGEST=`sudo docker push ${AWS_ACCOUNTID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${FUNC_NAME} | grep digest | cut -d ' ' -f3`
+            docker build -t tensorflow-lambda-test .
+            docker tag tensorflow-lambda-test ${ACCOUNTID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${FUNC_NAME}
+            ECR_DIGEST=`docker push ${AWS_ACCOUNTID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${FUNC_NAME} | grep digest | cut -d ' ' -f3`
             echo &{ECR_DIGEST}
       - run:
           name: env debug

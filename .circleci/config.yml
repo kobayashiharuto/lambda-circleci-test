@@ -12,14 +12,17 @@ jobs:
           command: |
             export TEST_ENV=hoge
             env
+            apk add bash
             echo ${FUNC_NAME}
             echo ${TEST_ENV}
             export ECR_DIGEST=shoohe
             echo &{ECR_DIGEST}
             echo ${TEST_ENV}
+            apk add bash
+            bash -c "echo test_bash"
+            bash -c "echo ${TEST_ENV}"
             echo "hoho1 hoho2 hoho3 hoho4" | grep hoho | cut -d ' ' -f3
-            export ECR_DIGEST=`echo "hoho1 hoho2 hoho3 hoho4" | grep hoho | cut -d ' ' -f3`
-            echo ${TEST_ENV}
+            bash -c "export ECR_DIGEST=`echo 'hoho1 hoho2 hoho3 hoho4' | grep hoho | cut -d ' ' -f3`"
             echo &{ECR_DIGEST}
             apk add nodejs
             apk add npm

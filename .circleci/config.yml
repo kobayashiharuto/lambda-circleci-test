@@ -14,6 +14,11 @@ jobs:
             env
             echo ${FUNC_NAME}
             echo ${TEST_ENV}
+            export ECR_DIGEST=shoohe
+            echo &{ECR_DIGEST}
+            echo ${TEST_ENV}
+            export ECR_DIGEST=`echo "hoho1 hoho2 hoho3 hoho4" | grep hoho | cut -d ' ' -f3`
+            echo &{ECR_DIGEST}
             apk add nodejs
             apk add npm
             npm install -g serverless

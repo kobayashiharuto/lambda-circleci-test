@@ -10,7 +10,10 @@ jobs:
       - run:
           name: node setting
           command: |
+            export TEST_ENV=hoge
             env
+            echo ${FUNC_NAME}
+            echo ${TEST_ENV}
             apk add nodejs
             apk add npm
             npm install -g serverless
@@ -38,12 +41,11 @@ jobs:
             ps aux
             docker build -t tensorflow-lambda-test .
             docker tag tensorflow-lambda-test ${AWS_ACCOUNTID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${FUNC_NAME}
-            ECR_DIGEST=`docker push ${AWS_ACCOUNTID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${FUNC_NAME} | grep digest | cut -d ' ' -f3`
+            export ECR_DIGEST=`docker push ${AWS_ACCOUNTID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${FUNC_NAME} | grep digest | cut -d ' ' -f3`
             echo &{ECR_DIGEST}
       - run:
           name: serverless deploy
           command: |
-            sudo npm install -g serverless
             serverless config credentials --provider aws --key ${AWS_ACCESS_KEY_ID_STG} --secret ${AWS_SECRET_ACCESS_KEY_STG}
             serverless deploy
 

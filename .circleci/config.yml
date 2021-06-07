@@ -12,7 +12,6 @@ jobs:
           command: |
             export TEST_ENV=hoge
             env
-            apk add bash
             echo ${FUNC_NAME}
             echo ${TEST_ENV}
             export ECR_DIGEST=shoohe

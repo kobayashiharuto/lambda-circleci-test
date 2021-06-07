@@ -3,21 +3,21 @@ version: 2.0
 jobs:
   deploy_lambda_test:
     docker:
-      - image: docker:latest
+      - image: amazon/aws-cli
     steps:
       - checkout
       - setup_remote_docker
+      - run:
+          name: env debug
+          command: env
       - run:
           name: build image
           command: |
             ps aux
             docker build -t tensorflow-lambda-test .
-            docker tag tensorflow-lambda-test ${ACCOUNTID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${FUNC_NAME}
+            docker tag tensorflow-lambda-test ${AWS_ACCOUNTID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${FUNC_NAME}
             ECR_DIGEST=`docker push ${AWS_ACCOUNTID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${FUNC_NAME} | grep digest | cut -d ' ' -f3`
             echo &{ECR_DIGEST}
-      - run:
-          name: env debug
-          command: env
       - run:
           name: git clone
           command: |

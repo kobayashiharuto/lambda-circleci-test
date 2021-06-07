@@ -4,12 +4,13 @@ orbs:
 
 jobs:
   deploy_lambda_test:
-    machine:
-      image: circleci/classic:edge
+    docker:
+      - image: circleci/node
     steps:
       - checkout
       - aws-cli/install
       - aws-cli/setup
+      - setup_remote_docker
       - run:
           name: env debug
           command: env
@@ -29,7 +30,6 @@ jobs:
             sudo apt install docker
             sudo service --status-all
             sudo docker --version
-      - setup_remote_docker
       - run:
           name: build image
           command: |
